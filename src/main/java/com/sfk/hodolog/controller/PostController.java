@@ -1,19 +1,14 @@
 package com.sfk.hodolog.controller;
 
-import com.sfk.hodolog.domain.Post;
 import com.sfk.hodolog.request.PostCreate;
 import com.sfk.hodolog.response.PostResponse;
 import com.sfk.hodolog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -36,12 +31,17 @@ public class PostController {
      * /posts/{postId} -> 글 한개만 조회
      */
 
+    //조회 API
+    @GetMapping("/posts")
+    public List<PostResponse> getList() {
+        return postService.getList();
+    }
+
     @GetMapping("/posts/{postId}")
-    public PostResponse get(@PathVariable(name = "postId") Long id) {
+    public PostResponse get(@PathVariable Long postId) {
         // Request 클래스
         // Response 클래스
 
-        PostResponse response = postService.get(id);
-        return response;
+        return postService.get(postId);
     }
 }
