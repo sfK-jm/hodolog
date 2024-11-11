@@ -3,6 +3,7 @@ package com.sfk.hodolog.service;
 import com.sfk.hodolog.domain.Post;
 import com.sfk.hodolog.repository.PostRepository;
 import com.sfk.hodolog.request.PostCreate;
+import com.sfk.hodolog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,13 +58,13 @@ class PostServiceTest {
         postRepository.save(requestPost);
 
         // when
-        Post post = postService.get(requestPost.getId());
+        PostResponse response = postService.get(requestPost.getId());
 
         // then
-        assertNotNull(post);
+        assertNotNull(response);
 
         assertEquals(1L, postRepository.count());
-        assertEquals("제목", post.getTitle());
-        assertEquals("컨텐츠", post.getContent());
+        assertEquals("제목", response.getTitle());
+        assertEquals("컨텐츠", response.getContent());
     }
 }

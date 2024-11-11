@@ -3,6 +3,7 @@ package com.sfk.hodolog.service;
 import com.sfk.hodolog.domain.Post;
 import com.sfk.hodolog.repository.PostRepository;
 import com.sfk.hodolog.request.PostCreate;
+import com.sfk.hodolog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,16 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post get(Long id) {
+    public PostResponse get(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글 입니다."));
 
-        return post;
+        PostResponse response = PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .build();
+
+        return response;
     }
 }

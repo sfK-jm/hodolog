@@ -2,6 +2,7 @@ package com.sfk.hodolog.controller;
 
 import com.sfk.hodolog.domain.Post;
 import com.sfk.hodolog.request.PostCreate;
+import com.sfk.hodolog.response.PostResponse;
 import com.sfk.hodolog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +37,11 @@ public class PostController {
      */
 
     @GetMapping("/posts/{postId}")
-    public Post get(@PathVariable(name = "postId") Long id) {
-        Post post = postService.get(id);
-        return post;
+    public PostResponse get(@PathVariable(name = "postId") Long id) {
+        // Request 클래스
+        // Response 클래스
+
+        PostResponse response = postService.get(id);
+        return response;
     }
 }
