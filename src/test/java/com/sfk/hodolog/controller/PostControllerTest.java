@@ -18,6 +18,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -156,15 +160,15 @@ class PostControllerTest {
     @DisplayName("글 여러개 조회")
     void test5() throws Exception {
         // given
-        Post post1 = postRepository.save(Post.builder()
-                .title("1")
-                .content("컨텐츠1")
-                .build());
 
-        Post post2 = postRepository.save(Post.builder()
-                .title("2")
-                .content("컨텐츠2")
-                .build());
+        List<Post> requestPosts = IntStream.range(1, 31)
+                .mapToObj(i -> Post.builder()
+                        .title("타이틀 - " + i)
+                        .content("컨텐츠 - " + i)
+                        .build())
+                .collect(Collectors.toList());
+        postRepository.saveAll(requestPosts);
+
 
         /**
          * 1개 조회할 경우
@@ -177,13 +181,13 @@ class PostControllerTest {
          */
 
         // expected
-        mockMvc.perform(MockMvcRequestBuilders.get("/posts")
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=0&sort=id,desc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(2)))
-                .andExpect(jsonPath("$[0].id").value(post1.getId()))
-                .andExpect(jsonPath("$[0].title").value("1"))
-                .andExpect(jsonPath("$[0].content").value("컨텐츠1"))
+                .andExpect(jsonPath("$.length()", Matchers.is(5)))
+                .andExpect(jsonPath("$[0].id").value(30))
+                .andExpect(jsonPath("$[0].title").value("타이틀 - 30"))
+                .andExpect(jsonPath("$[0].content").value("컨텐츠 - 30"))
                 .andDo(MockMvcResultHandlers.print());
     }
 }
