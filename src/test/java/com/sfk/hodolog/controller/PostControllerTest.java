@@ -181,11 +181,45 @@ class PostControllerTest {
          */
 
         // expected
-        mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=0&sort=id,desc")
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=1&size=10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(5)))
-                .andExpect(jsonPath("$[0].id").value(30))
+                .andExpect(jsonPath("$.length()", Matchers.is(10)))
+                .andExpect(jsonPath("$[0].title").value("타이틀 - 30"))
+                .andExpect(jsonPath("$[0].content").value("컨텐츠 - 30"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+
+    @Test
+    @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다.")
+    void test5_1() throws Exception {
+        // given
+
+        List<Post> requestPosts = IntStream.range(1, 31)
+                .mapToObj(i -> Post.builder()
+                        .title("타이틀 - " + i)
+                        .content("컨텐츠 - " + i)
+                        .build())
+                .collect(Collectors.toList());
+        postRepository.saveAll(requestPosts);
+
+
+        /**
+         * 1개 조회할 경우
+         * {id: ..., title: ...}
+         */
+
+        /**
+         * 리스트로 조회할 경우
+         * [{id: ..., title: ...}, {id: ..., title: ...}]
+         */
+
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=0&size=10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(10)))
                 .andExpect(jsonPath("$[0].title").value("타이틀 - 30"))
                 .andExpect(jsonPath("$[0].content").value("컨텐츠 - 30"))
                 .andDo(MockMvcResultHandlers.print());

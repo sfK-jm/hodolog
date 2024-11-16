@@ -1,6 +1,7 @@
 package com.sfk.hodolog.controller;
 
 import com.sfk.hodolog.request.PostCreate;
+import com.sfk.hodolog.request.PostSearch;
 import com.sfk.hodolog.response.PostResponse;
 import com.sfk.hodolog.service.PostService;
 import jakarta.validation.Valid;
@@ -28,6 +29,15 @@ public class PostController {
         postService.write(request);
     }
 
+    @GetMapping("/posts/{postId}")
+    public PostResponse get(@PathVariable Long postId) {
+        // Request 클래스
+        // Response 클래스
+
+        return postService.get(postId);
+    }
+
+
     /**
      * /post -> 글 전체 조회(검색 + 페이징)
      * /posts/{postId} -> 글 한개만 조회
@@ -35,15 +45,7 @@ public class PostController {
 
     //조회 API
     @GetMapping("/posts")
-    public List<PostResponse> getList(Pageable pageable) {
-        return postService.getList(pageable);
-    }
-
-    @GetMapping("/posts/{postId}")
-    public PostResponse get(@PathVariable Long postId) {
-        // Request 클래스
-        // Response 클래스
-
-        return postService.get(postId);
+    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
+        return postService.getList(postSearch);
     }
 }
