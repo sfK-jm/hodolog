@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sfk.hodolog.domain.Post;
 import com.sfk.hodolog.repository.PostRepository;
 import com.sfk.hodolog.request.PostCreate;
+import com.sfk.hodolog.request.PostEdit;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -156,6 +157,16 @@ class PostControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+
+
+    /*
+        1개 조회할 경우
+        {id: ..., title: ...}
+
+        리스트로 조회할 경우
+        [{id: ..., title: ...}, {id: ..., title: ...}]
+    */
+
     @Test
     @DisplayName("글 여러개 조회")
     void test5() throws Exception {
@@ -168,17 +179,6 @@ class PostControllerTest {
                         .build())
                 .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
-
-
-        /**
-         * 1개 조회할 경우
-         * {id: ..., title: ...}
-         */
-
-        /**
-         * 리스트로 조회할 경우
-         * [{id: ..., title: ...}, {id: ..., title: ...}]
-         */
 
         // expected
         mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=1&size=10")
@@ -193,7 +193,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다.")
-    void test5_1() throws Exception {
+    void test6() throws Exception {
         // given
 
         List<Post> requestPosts = IntStream.range(1, 31)
@@ -204,17 +204,6 @@ class PostControllerTest {
                 .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
 
-
-        /**
-         * 1개 조회할 경우
-         * {id: ..., title: ...}
-         */
-
-        /**
-         * 리스트로 조회할 경우
-         * [{id: ..., title: ...}, {id: ..., title: ...}]
-         */
-
         // expected
         mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=0&size=10")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -222,6 +211,30 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.length()", Matchers.is(10)))
                 .andExpect(jsonPath("$[0].title").value("타이틀 - 30"))
                 .andExpect(jsonPath("$[0].content").value("컨텐츠 - 30"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("글 제목수정")
+    void test7() throws Exception {
+        // given
+
+        Post post = Post.builder()
+                .title("제목")
+                .content("내용")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("타이틀")
+                .content("내용")
+                .build();
+
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.patch("/posts/{postId}", post.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postEdit)))
+                .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 }

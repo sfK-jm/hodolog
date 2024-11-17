@@ -1,6 +1,7 @@
 package com.sfk.hodolog.controller;
 
 import com.sfk.hodolog.request.PostCreate;
+import com.sfk.hodolog.request.PostEdit;
 import com.sfk.hodolog.request.PostSearch;
 import com.sfk.hodolog.response.PostResponse;
 import com.sfk.hodolog.service.PostService;
@@ -47,5 +48,10 @@ public class PostController {
     @GetMapping("/posts")
     public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
         return postService.getList(postSearch);
+    }
+
+    @PatchMapping("/posts/{postId}")
+    public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request) {
+        postService.edit(postId, request);
     }
 }
