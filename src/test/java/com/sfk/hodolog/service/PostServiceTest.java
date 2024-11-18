@@ -49,7 +49,7 @@ class PostServiceTest {
         postService.write(postCreate);
 
         //then
-        Assertions.assertEquals(1L, postRepository.count());
+        assertEquals(1L, postRepository.count());
         Post post = postRepository.findAll().get(0);
         assertEquals("제목입니다.", post.getTitle());
         assertEquals("내용입니다.", post.getContent());
@@ -127,8 +127,8 @@ class PostServiceTest {
         // then
         Post changedPost = postRepository.findById(post.getId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글 입니다. id =" +  post.getId()));
-        Assertions.assertEquals("타이틀", changedPost.getTitle());
-        Assertions.assertEquals("내용", changedPost.getContent());
+        assertEquals("타이틀", changedPost.getTitle());
+        assertEquals("내용", changedPost.getContent());
     }
 
     @Test
@@ -152,9 +152,24 @@ class PostServiceTest {
         // then
         Post changedPost = postRepository.findById(post.getId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글 입니다. id =" +  post.getId()));
-        Assertions.assertEquals("제목", changedPost.getTitle());
-        Assertions.assertEquals("컨텐츠", changedPost.getContent());
+        assertEquals("제목", changedPost.getTitle());
+        assertEquals("컨텐츠", changedPost.getContent());
     }
 
+    @Test
+    @DisplayName("게시글 삭제")
+    void test6() {
+        // given
+        Post post = Post.builder()
+                .title("제목")
+                .content("내용")
+                .build();
+        postRepository.save(post);
 
+        // when
+        postService.delete(post.getId());
+
+        // then
+        assertEquals(0, postRepository.count());
+    }
 }
