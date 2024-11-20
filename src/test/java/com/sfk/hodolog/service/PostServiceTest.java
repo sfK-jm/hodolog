@@ -230,6 +230,5 @@ class PostServiceTest {
         assertThrows(PostNotFound.class, () -> {
             postService.edit(post.getId() + 1L, postEdit);
         });
-
     }
 }
