@@ -61,7 +61,7 @@ public class PostControllerDocTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
-                .andDo(document("index",
+                .andDo(document("post-inquiry",
                         RequestDocumentation.pathParameters(
                                 RequestDocumentation.parameterWithName("postId").description("게시글 ID")
                         ),
@@ -88,7 +88,7 @@ public class PostControllerDocTest {
                         .content(json))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
-                .andDo(document("index",
+                .andDo(document("post-create",
                         PayloadDocumentation.requestFields(
                                 PayloadDocumentation.fieldWithPath("title").description("제목"),
                                 PayloadDocumentation.fieldWithPath("content").description("내용")
