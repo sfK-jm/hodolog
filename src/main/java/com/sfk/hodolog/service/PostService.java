@@ -33,6 +33,7 @@ public class PostService {
                 .content(postCreate.getContent())
                 .build();
 
+        log.info("write: {}", postCreate);
         postRepository.save(post);
     }
 
