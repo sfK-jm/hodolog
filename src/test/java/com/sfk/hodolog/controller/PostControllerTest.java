@@ -45,7 +45,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/posts 요청시 hello world 출력")
+    @DisplayName("글 작성 요청시 title과 content를 출력")
     void test() throws Exception {
         //given
         PostCreate request = PostCreate.builder()
