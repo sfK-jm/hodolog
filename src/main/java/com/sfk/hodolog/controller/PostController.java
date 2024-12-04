@@ -1,11 +1,13 @@
 package com.sfk.hodolog.controller;
 
+import com.sfk.hodolog.config.data.UserSession;
 import com.sfk.hodolog.exception.InvalidRequest;
 import com.sfk.hodolog.request.PostCreate;
 import com.sfk.hodolog.request.PostEdit;
 import com.sfk.hodolog.request.PostSearch;
 import com.sfk.hodolog.response.PostResponse;
 import com.sfk.hodolog.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +24,15 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/test")
-    public String test() {
-        return "hello";
+    @GetMapping("/foo")
+    public String foo(UserSession userSession) {
+        log.info(">>> {}", userSession.name);
+        return "foo";
     }
 
-    @GetMapping("/foo")
-    public String foo() {
-        return "foo";
+    @GetMapping("/bar")
+    public String bar() {
+        return "인증이 필요없는 페이지";
     }
 
     @PostMapping("/posts")
