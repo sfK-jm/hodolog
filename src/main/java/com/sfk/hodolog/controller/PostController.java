@@ -1,18 +1,14 @@
 package com.sfk.hodolog.controller;
 
 import com.sfk.hodolog.config.data.UserSession;
-import com.sfk.hodolog.exception.InvalidRequest;
 import com.sfk.hodolog.request.PostCreate;
 import com.sfk.hodolog.request.PostEdit;
 import com.sfk.hodolog.request.PostSearch;
 import com.sfk.hodolog.response.PostResponse;
 import com.sfk.hodolog.service.PostService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +21,9 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/foo")
-    public String foo(UserSession userSession) {
-        log.info(">>> {}", userSession.name);
-        return "foo";
+    public Long foo(UserSession userSession) {
+        log.info(">>> {}", userSession.id);
+        return userSession.id;
     }
 
     @GetMapping("/bar")
