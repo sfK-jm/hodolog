@@ -1,5 +1,6 @@
 package com.sfk.hodolog.controller;
 
+import com.sfk.hodolog.config.AppConfig;
 import com.sfk.hodolog.domain.Users;
 import com.sfk.hodolog.exception.InvalidRequest;
 import com.sfk.hodolog.exception.InvalidSigninInformation;
@@ -30,8 +31,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
 
+    public static final String KEY = "HAD2DppFSBkoSyPV7H3E0IUsvVU/rQ5tVzvsfRdOI9Y=";
     private final AuthService authService;
-    private final String KEY = "HAD2DppFSBkoSyPV7H3E0IUsvVU/rQ5tVzvsfRdOI9Y=";
 
     @PostMapping("/auth/login")
     public SessionResponse login(@RequestBody Login login) {

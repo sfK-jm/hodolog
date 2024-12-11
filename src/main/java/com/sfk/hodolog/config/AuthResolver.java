@@ -25,8 +25,9 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
-    private final SessionRepository sessionRepository;
     private static final String KEY = "HAD2DppFSBkoSyPV7H3E0IUsvVU/rQ5tVzvsfRdOI9Y=";
+    private final SessionRepository sessionRepository;
+    private final AppConfig appConfig;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -58,6 +59,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 //        return new UserSession(session.getUser().getId());
 
         //jwt 방식
+        log.info(">>>>>>> appConfig {}", appConfig.hello);
         String jws = webRequest.getHeader("Authorization");
         if (jws == null || jws.equals("")) {
             throw new Unauthorized();
