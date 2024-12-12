@@ -24,6 +24,7 @@ import javax.crypto.SecretKey;
 import java.security.Key;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -31,8 +32,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
 
-    public static final String KEY = "HAD2DppFSBkoSyPV7H3E0IUsvVU/rQ5tVzvsfRdOI9Y=";
     private final AuthService authService;
+    private final AppConfig appConfig;
 
     @PostMapping("/auth/login")
     public SessionResponse login(@RequestBody Login login) {
@@ -53,11 +54,12 @@ public class AuthController {
                 .build();*/
 
         // JWT
-        SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(KEY));
+        SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
 
         String jws = Jwts.builder().
                 subject(String.valueOf(userId))
                 .signWith(key)
+                .setIssuedAt(new Date())
                 .compact();
 
         return new SessionResponse(jws);

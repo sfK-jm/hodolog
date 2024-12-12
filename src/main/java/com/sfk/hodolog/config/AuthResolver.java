@@ -25,7 +25,6 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
-    private static final String KEY = "HAD2DppFSBkoSyPV7H3E0IUsvVU/rQ5tVzvsfRdOI9Y=";
     private final SessionRepository sessionRepository;
     private final AppConfig appConfig;
 
@@ -59,18 +58,15 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 //        return new UserSession(session.getUser().getId());
 
         //jwt 방식
-        log.info(">>>>>>> appConfig {}", appConfig.hello);
+        log.info(">>>>>>> appConfig {}", appConfig.getJwtKey());
         String jws = webRequest.getHeader("Authorization");
         if (jws == null || jws.equals("")) {
             throw new Unauthorized();
         }
 
-        byte[] decodedKey = Base64.getDecoder().decode(KEY);
-
-
         try {
             Jws<Claims> claims = Jwts.parser()
-                    .setSigningKey(decodedKey)
+                    .setSigningKey(appConfig.getJwtKey())
                     .build()
                     .parseClaimsJws(jws);
 

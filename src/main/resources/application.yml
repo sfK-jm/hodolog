@@ -29,4 +29,4 @@ spring:
 
 
 hodolog:
-  hello: "world"
+  jwt-key: "HAD2DppFSBkoSyPV7H3E0IUsvVU/rQ5tVzvsfRdOI9Y="
