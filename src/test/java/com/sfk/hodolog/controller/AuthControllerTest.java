@@ -7,6 +7,7 @@ import com.sfk.hodolog.repository.PostRepository;
 import com.sfk.hodolog.repository.SessionRepository;
 import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.request.Login;
+import com.sfk.hodolog.request.Signup;
 import org.apache.catalina.User;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -168,6 +169,24 @@ class AuthControllerTest {
                         .header("Authorization", session.getAccessToken() + "aa")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("회원가입")
+    public void test6() throws Exception {
+        //given
+        Signup signup = Signup.builder()
+                .email("a@gmail.com")
+                .password("!234")
+                .name("a")
+                .build();
+
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/signup")
+                        .content(objectMapper.writeValueAsString(signup))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 }

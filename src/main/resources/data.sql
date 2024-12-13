@@ -1,1 +1,0 @@
-INSERT INTO `USERS` (name, email, password, created_at) VALUES ( 'test', 'a@gmail.com', '1234', '2022-11-20 17:40:00'  )

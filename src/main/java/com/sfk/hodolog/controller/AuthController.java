@@ -6,6 +6,7 @@ import com.sfk.hodolog.exception.InvalidRequest;
 import com.sfk.hodolog.exception.InvalidSigninInformation;
 import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.request.Login;
+import com.sfk.hodolog.request.Signup;
 import com.sfk.hodolog.response.SessionResponse;
 import com.sfk.hodolog.service.AuthService;
 import io.jsonwebtoken.Jwts;
@@ -63,5 +64,11 @@ public class AuthController {
                 .compact();
 
         return new SessionResponse(jws);
+    }
+
+    @PostMapping("/auth/signup")
+    public void signup(@RequestBody Signup signup) {
+        authService.signup(signup);
+
     }
 }
