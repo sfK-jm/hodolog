@@ -1,5 +1,6 @@
 package com.sfk.hodolog.service;
 
+import com.sfk.hodolog.crypto.PasswordEncoder;
 import com.sfk.hodolog.domain.Session;
 import com.sfk.hodolog.domain.Users;
 import com.sfk.hodolog.exception.AlreadyExistsEmailException;
@@ -22,10 +23,18 @@ public class AuthService {
 
     @Transactional
     public Long signin(Login login) {
-        Users user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
+//        Users user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
+//                .orElseThrow(InvalidSigninInformation::new);
+
+        Users user = userRepository.findByEmail(login.getEmail())
                 .orElseThrow(InvalidSigninInformation::new);
 
-        Session session = user.addSession();
+        PasswordEncoder encoder = new PasswordEncoder();
+
+        boolean matches = encoder.matches(login.getPassword(), user.getPassword());
+        if (!matches) {
+            throw new InvalidSigninInformation();
+        }
 
         return user.getId();
     }
@@ -37,10 +46,9 @@ public class AuthService {
             throw new AlreadyExistsEmailException();
         }
 
-        SCryptPasswordEncoder encoder = new SCryptPasswordEncoder(
-                16, 8, 1, 32, 64);
+        PasswordEncoder encoder = new PasswordEncoder();
 
-        String encryptedPassword = encoder.encode(signup.getPassword());
+        String encryptedPassword = encoder.encrypt(signup.getPassword());
 
         Users user = Users.builder()
                 .name(signup.getName())

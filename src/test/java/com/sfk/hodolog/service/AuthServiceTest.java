@@ -1,8 +1,11 @@
 package com.sfk.hodolog.service;
 
+import com.sfk.hodolog.crypto.PasswordEncoder;
 import com.sfk.hodolog.domain.Users;
 import com.sfk.hodolog.exception.AlreadyExistsEmailException;
+import com.sfk.hodolog.exception.InvalidSigninInformation;
 import com.sfk.hodolog.repository.UserRepository;
+import com.sfk.hodolog.request.Login;
 import com.sfk.hodolog.request.Signup;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -72,6 +75,59 @@ class AuthServiceTest {
 
         // expected
         assertThrows(AlreadyExistsEmailException.class, () -> authService.signup(signup));
+
+    }
+
+    @Test
+    @DisplayName("로그인 성공")
+    void test3() {
+        // given
+        PasswordEncoder encoder = new PasswordEncoder();
+        String encryptedPassword = encoder.encrypt("1234");
+
+        Users user = Users.builder()
+                .email("a@gmail.com")
+                .password(encryptedPassword)
+                .name("a")
+                .build();
+
+        userRepository.save(user);
+
+        Login login = Login.builder()
+                .email("a@gmail.com")
+                .password("1234")
+                .build();
+
+        // when
+        Long userId = authService.signin(login);
+
+        // then
+        assertNotNull(userId);
+    }
+
+
+    @Test
+    @DisplayName("로그인시 비밀번호 틀림")
+    void test4() {
+        // given
+        PasswordEncoder encoder = new PasswordEncoder();
+        String encryptedPassword = encoder.encrypt("1234");
+
+        Users user = Users.builder()
+                .email("a@gmail.com")
+                .password(encryptedPassword)
+                .name("a")
+                .build();
+
+        userRepository.save(user);
+
+        Login login = Login.builder()
+                .email("a@gmail.com")
+                .password("12345")
+                .build();
+
+        // expected
+        assertThrows(InvalidSigninInformation.class, () -> authService.signin(login));
 
     }
 }
