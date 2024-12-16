@@ -1,6 +1,7 @@
 package com.sfk.hodolog.service;
 
 import com.sfk.hodolog.crypto.PasswordEncoder;
+import com.sfk.hodolog.crypto.ScryptPasswordEncoder;
 import com.sfk.hodolog.domain.Users;
 import com.sfk.hodolog.exception.AlreadyExistsEmailException;
 import com.sfk.hodolog.exception.InvalidSigninInformation;
@@ -8,15 +9,15 @@ import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.request.Login;
 import com.sfk.hodolog.request.Signup;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class AuthServiceTest {
 
@@ -25,6 +26,9 @@ class AuthServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @AfterEach
     void clean() {
@@ -49,8 +53,7 @@ class AuthServiceTest {
 
         Users user = userRepository.findAll().iterator().next();
         assertEquals("a@gmail.com", user.getEmail());
-        assertNotEquals("1234", user.getPassword());
-        assertNotNull(user.getPassword());
+        assertEquals("1234", user.getPassword());
         assertEquals("test", user.getName());
 
     }
@@ -82,7 +85,6 @@ class AuthServiceTest {
     @DisplayName("로그인 성공")
     void test3() {
         // given
-        PasswordEncoder encoder = new PasswordEncoder();
         String encryptedPassword = encoder.encrypt("1234");
 
         Users user = Users.builder()
@@ -110,7 +112,6 @@ class AuthServiceTest {
     @DisplayName("로그인시 비밀번호 틀림")
     void test4() {
         // given
-        PasswordEncoder encoder = new PasswordEncoder();
         String encryptedPassword = encoder.encrypt("1234");
 
         Users user = Users.builder()
