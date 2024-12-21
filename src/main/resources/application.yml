@@ -4,12 +4,6 @@ spring:
       enabled: true
       path: /h2-console
 
-  data:
-    web:
-      pageable:
-        one-indexed-parameters: true
-        default-page-size: 5
-
   datasource:
     url: jdbc:h2:mem:hodolog;NON_KEYWORDS=USER
     username: sa
@@ -18,13 +12,18 @@ spring:
 
   jpa:
     defer-datasource-initialization: true
+  data:
+    web:
+      pageable:
+        max-page-size: 2000
+        default-page-size: 20
+        one-indexed-parameters: true
+
+hodolog:
+  jwt-key: "HAD2DppFSBkoSyPV7H3E0IUsvVU/rQ5tVzvsfRdOI9Y="
 
 #  jpa:
 #    show-sql: true
 #    properties:
 #      hibernate:
 #        format_sql: true
-
-
-hodolog:
-  jwt-key: "HAD2DppFSBkoSyPV7H3E0IUsvVU/rQ5tVzvsfRdOI9Y="
