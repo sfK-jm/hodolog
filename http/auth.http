@@ -3,10 +3,8 @@
 POST http://localhost:8080/auth/login
 Content-Type: application/x-www-form-urlencoded
 
-username=a&password=1234
+username=a&password=1234&remember=1
 
-### 인증 페이지 요청
+### 메인 페이지
 
-GET localhost:8080/foo
-Content-Type:  application/json
-Cookie: SESSION=475daa78-53db-4dc8-a9db-47334b9ff49e
+GET http://localhost:8080

@@ -15,7 +15,4 @@ public class AppConfig {
         this.jwtKey = Base64.getDecoder().decode(jwtKey);
     }
 
-    public byte[] getJwtKey() {
-        return jwtKey;
-    }
 }
