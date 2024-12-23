@@ -13,11 +13,11 @@ public class MainController {
 
     @GetMapping("/user")
     public String user() {
-        return "사용자 페이집입니다.";
+        return "사용자 페이지입니다.";
     }
 
     @GetMapping("/admin")
     public String admin() {
-        return "관리자 페이집입니다.";
+        return "관리자 페이지입니다.";
     }
 }
