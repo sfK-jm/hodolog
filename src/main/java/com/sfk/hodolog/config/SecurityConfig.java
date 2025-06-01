@@ -5,6 +5,7 @@ import com.sfk.hodolog.config.filter.EmailPasswordAuthFilter;
 import com.sfk.hodolog.config.handler.Http401Handler;
 import com.sfk.hodolog.config.handler.Http403Handler;
 import com.sfk.hodolog.config.handler.LoginFailHandler;
+import com.sfk.hodolog.config.handler.LoginSuccessHandler;
 import com.sfk.hodolog.domain.Users;
 import com.sfk.hodolog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,9 +55,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/signup").permitAll()
-                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
+//                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(usernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> {
@@ -74,7 +74,7 @@ public class SecurityConfig {
     public EmailPasswordAuthFilter usernamePasswordAuthenticationFilter() {
         EmailPasswordAuthFilter filter = new EmailPasswordAuthFilter("/auth/login", objectMapper);
         filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/"));
+        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
 

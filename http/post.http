@@ -1,5 +1,9 @@
-### 테스트 요청
+### 계시글 작성
 
-GET http://localhost:8080/foo
+POST http://localhost:8080/posts
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM0MDAwMDU1fQ.Xin4s9nX4hf_wj9ESY-xqixaMJI6T-pjnjw2MZiX8aY
+
+{
+  "title": "제목입니다",
+  "content": "내용입니다."
+}
