@@ -18,6 +18,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.restdocs.request.RequestDocumentation;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -74,6 +75,7 @@ public class PostControllerDocTest {
     }
 
     @Test
+    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
     @DisplayName("글 등록")
     void test2() throws Exception {
 

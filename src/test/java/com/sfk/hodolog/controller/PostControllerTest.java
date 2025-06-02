@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -45,6 +46,7 @@ class PostControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
     @DisplayName("글 작성 요청시 title과 content를 출력")
     void test() throws Exception {
         //given
@@ -91,7 +93,8 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/posts 요청시 DB에 값이 저장된다.")
+    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
+    @DisplayName("글 작성")
     void test3() throws Exception {
         //given
         PostCreate request = PostCreate.builder()
@@ -215,6 +218,7 @@ class PostControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
     @DisplayName("글 제목수정")
     void test7() throws Exception {
         // given
@@ -239,6 +243,7 @@ class PostControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
     @DisplayName("게시글 삭제")
     void test8() throws Exception {
         // given
@@ -258,13 +263,14 @@ class PostControllerTest {
     @Test
     @DisplayName("존재하지 않는 게시글 조회")
     void test9() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/posts/{postId}", 1L)
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts/{postId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
+    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
     @DisplayName("존재하지 않는 게시글 수정")
     void test10() throws Exception {
         //given
