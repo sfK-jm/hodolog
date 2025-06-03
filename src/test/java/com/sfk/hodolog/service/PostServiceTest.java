@@ -1,8 +1,11 @@
 package com.sfk.hodolog.service;
 
 import com.sfk.hodolog.domain.Post;
+import com.sfk.hodolog.domain.Users;
 import com.sfk.hodolog.exception.PostNotFound;
+import com.sfk.hodolog.exception.UserNotFound;
 import com.sfk.hodolog.repository.PostRepository;
+import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.request.PostCreate;
 import com.sfk.hodolog.request.PostEdit;
 import com.sfk.hodolog.request.PostSearch;
@@ -16,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +34,8 @@ class PostServiceTest {
     PostService postService;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeEach
     void clean() {
@@ -37,9 +43,12 @@ class PostServiceTest {
     }
 
     @Test
+    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
     @DisplayName("글 작성")
     void test1() {
         //given
+
+        Users user = userRepository.findByName("a@gmail.com");
 
         PostCreate postCreate = PostCreate.builder()
                 .title("제목입니다.")
@@ -47,7 +56,7 @@ class PostServiceTest {
                 .build();
 
         //when
-        postService.write(postCreate);
+        postService.write(user.getId(), postCreate);
 
         //then
         assertEquals(1L, postRepository.count());

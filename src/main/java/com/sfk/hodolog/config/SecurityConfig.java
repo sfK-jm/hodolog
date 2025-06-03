@@ -35,7 +35,6 @@ import org.springframework.session.security.web.authentication.SpringSessionReme
 @Slf4j
 @Configuration
 @EnableWebSecurity(debug = true)
-@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 

@@ -3,7 +3,9 @@ package com.sfk.hodolog.service;
 import com.sfk.hodolog.domain.Post;
 import com.sfk.hodolog.domain.PostEditor;
 import com.sfk.hodolog.exception.PostNotFound;
+import com.sfk.hodolog.exception.UserNotFound;
 import com.sfk.hodolog.repository.PostRepository;
+import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.request.PostCreate;
 import com.sfk.hodolog.request.PostEdit;
 import com.sfk.hodolog.request.PostSearch;
@@ -24,11 +26,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
 
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    public void write(PostCreate postCreate) {
+    public void write(Long userId, PostCreate postCreate) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
+
         //postCreate -> entity
         Post post = Post.builder()
+                .user(user)
                 .title(postCreate.getTitle())
                 .content(postCreate.getContent())
                 .build();
