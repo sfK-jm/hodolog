@@ -16,7 +16,6 @@ Content-Type: application/json
 {
   "email": "a@gmail.com",
   "password": "1234"
-
 }
 
 ### 로그인 실패

@@ -1,9 +1,12 @@
 package com.sfk.hodolog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sfk.hodolog.config.HodologMockUser;
 import com.sfk.hodolog.domain.Post;
 import com.sfk.hodolog.repository.PostRepository;
+import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.request.PostCreate;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,6 +50,16 @@ public class PostControllerDocTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @AfterEach
+    void clean() {
+        postRepository.deleteAll();
+        userRepository.deleteAll();
+
+    }
+
 
     @Test
     @DisplayName("글 단건 조회")
@@ -75,7 +88,7 @@ public class PostControllerDocTest {
     }
 
     @Test
-    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
+    @HodologMockUser
     @DisplayName("글 등록")
     void test2() throws Exception {
 

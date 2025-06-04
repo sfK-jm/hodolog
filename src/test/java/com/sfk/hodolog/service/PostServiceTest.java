@@ -40,15 +40,20 @@ class PostServiceTest {
     @BeforeEach
     void clean() {
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
-    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
     @DisplayName("글 작성")
     void test1() {
         //given
 
-        Users user = userRepository.findByName("a@gmail.com");
+        var user = Users.builder()
+                .name("test")
+                .email("a@gmail.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
 
         PostCreate postCreate = PostCreate.builder()
                 .title("제목입니다.")

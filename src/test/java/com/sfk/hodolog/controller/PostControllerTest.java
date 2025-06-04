@@ -1,11 +1,15 @@
 package com.sfk.hodolog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sfk.hodolog.config.HodologMockUser;
 import com.sfk.hodolog.domain.Post;
+import com.sfk.hodolog.domain.Users;
 import com.sfk.hodolog.repository.PostRepository;
+import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.request.PostCreate;
 import com.sfk.hodolog.request.PostEdit;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,13 +44,17 @@ class PostControllerTest {
     @Autowired
     private PostRepository postRepository;
 
-    @BeforeEach
+    @Autowired
+    private UserRepository userRepository;
+
+    @AfterEach
     void clean() {
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
-    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
+    @HodologMockUser
     @DisplayName("글 작성 요청시 title과 content를 출력")
     void test() throws Exception {
         //given
@@ -93,7 +101,7 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
+    @HodologMockUser
     @DisplayName("글 작성")
     void test3() throws Exception {
         //given
@@ -171,14 +179,17 @@ class PostControllerTest {
     */
 
     @Test
+    @HodologMockUser
     @DisplayName("글 여러개 조회")
     void test5() throws Exception {
         // given
+        Users user = userRepository.findAll().get(0);
 
         List<Post> requestPosts = IntStream.range(1, 31)
                 .mapToObj(i -> Post.builder()
                         .title("타이틀 - " + i)
                         .content("컨텐츠 - " + i)
+                        .user(user)
                         .build())
                 .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
@@ -195,14 +206,17 @@ class PostControllerTest {
 
 
     @Test
+    @HodologMockUser
     @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다.")
     void test6() throws Exception {
         // given
+        Users user = userRepository.findAll().get(0);
 
         List<Post> requestPosts = IntStream.range(1, 31)
                 .mapToObj(i -> Post.builder()
                         .title("타이틀 - " + i)
                         .content("컨텐츠 - " + i)
+                        .user(user)
                         .build())
                 .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
@@ -218,14 +232,16 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
+    @HodologMockUser
     @DisplayName("글 제목수정")
     void test7() throws Exception {
         // given
+        Users user = userRepository.findAll().get(0);
 
         Post post = Post.builder()
                 .title("제목")
                 .content("내용")
+                .user(user)
                 .build();
         postRepository.save(post);
 
@@ -243,13 +259,16 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "a@gmail.com", roles = {"ADMIN"})
+    @HodologMockUser
     @DisplayName("게시글 삭제")
     void test8() throws Exception {
         // given
+        Users user = userRepository.findAll().get(0);
+
         Post post = Post.builder()
                 .title("제목")
                 .content("내용")
+                .user(user)
                 .build();
         postRepository.save(post);
 
