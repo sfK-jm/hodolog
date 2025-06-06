@@ -1,9 +1,9 @@
 package com.sfk.hodolog.controller;
 
 import com.sfk.hodolog.config.UserPrincipal;
-import com.sfk.hodolog.request.PostCreate;
-import com.sfk.hodolog.request.PostEdit;
-import com.sfk.hodolog.request.PostSearch;
+import com.sfk.hodolog.request.post.PostCreate;
+import com.sfk.hodolog.request.post.PostEdit;
+import com.sfk.hodolog.request.post.PostSearch;
 import com.sfk.hodolog.response.PostResponse;
 import com.sfk.hodolog.service.PostService;
 import jakarta.validation.Valid;

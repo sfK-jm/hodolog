@@ -1,9 +1,9 @@
-package com.sfk.hodolog.repository;
+package com.sfk.hodolog.repository.post;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sfk.hodolog.domain.Post;
 import com.sfk.hodolog.domain.QPost;
-import com.sfk.hodolog.request.PostSearch;
+import com.sfk.hodolog.request.post.PostSearch;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.sfk.hodolog.repository;
+package com.sfk.hodolog.repository.post;
 
 import com.sfk.hodolog.domain.Post;
 import org.springframework.data.jpa.repository.JpaRepository;

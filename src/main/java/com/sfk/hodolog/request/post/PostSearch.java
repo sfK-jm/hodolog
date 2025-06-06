@@ -1,4 +1,4 @@
-package com.sfk.hodolog.request;
+package com.sfk.hodolog.request.post;
 
 import lombok.Builder;
 import lombok.Getter;
