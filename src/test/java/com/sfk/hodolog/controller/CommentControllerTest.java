@@ -9,6 +9,7 @@ import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.repository.comment.CommentRepository;
 import com.sfk.hodolog.repository.post.PostRepository;
 import com.sfk.hodolog.request.comment.CommentCreate;
+import com.sfk.hodolog.request.comment.CommentDelete;
 import com.sfk.hodolog.request.post.PostCreate;
 import com.sfk.hodolog.request.post.PostEdit;
 import org.hamcrest.Matchers;
@@ -65,7 +66,6 @@ class CommentControllerTest {
     }
 
     @Test
-    @HodologMockUser
     @Transactional
     @DisplayName("댓글 작성")
     void test1() throws Exception {
@@ -108,5 +108,45 @@ class CommentControllerTest {
         assertEquals("댓글입니다...........", savedComment.getContent() );
     }
 
+    @Test
+    @Transactional
+    @DisplayName("댓글 삭제")
+    void test2() throws Exception {
+        // given
+        Users user = Users.builder()
+                .name("test")
+                .email("a@gamil.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
+
+        Post post = Post.builder()
+                .title("123456789012345")
+                .content("content")
+                .user(user)
+                .build();
+        postRepository.save(post);
+
+        String encryptedPassword = passwordEncoder.encode("123456");
+
+        Comment comment = Comment.builder()
+                .author("test")
+                .password(encryptedPassword)
+                .content("ㅁㅇㄴㄹㅁㅇㄴㄹㅁㅇㄴㄹㅁㄴㅇㄹㅁㅇㄹ")
+                .build();
+
+        comment.setPost(post);
+        commentRepository.save(comment);
+
+        CommentDelete request = new CommentDelete("123456");
+        String json = objectMapper.writeValueAsString(request);
+
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.post("/comments/{commentId}/delete", comment.getId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(json))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk());
+    }
 
 }

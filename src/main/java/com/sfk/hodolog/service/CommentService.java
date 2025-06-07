@@ -2,10 +2,13 @@ package com.sfk.hodolog.service;
 
 import com.sfk.hodolog.domain.Comment;
 import com.sfk.hodolog.domain.Post;
+import com.sfk.hodolog.exception.CommentNotFound;
+import com.sfk.hodolog.exception.InvalidPassword;
 import com.sfk.hodolog.exception.PostNotFound;
 import com.sfk.hodolog.repository.comment.CommentRepository;
 import com.sfk.hodolog.repository.post.PostRepository;
 import com.sfk.hodolog.request.comment.CommentCreate;
+import com.sfk.hodolog.request.comment.CommentDelete;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,5 +37,17 @@ public class CommentService {
                 .build();
 
         post.addComment(comment);
+    }
+
+    public void delete(Long commentId, @Valid CommentDelete request) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFound::new);
+
+        String encryptedPassword = comment.getPassword();
+        if (!passwordEncoder.matches(request.getPassword(), encryptedPassword)) {
+            throw new InvalidPassword();
+        }
+
+        commentRepository.delete(comment);
     }
 }
