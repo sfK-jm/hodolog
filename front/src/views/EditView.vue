@@ -20,13 +20,13 @@ const props = defineProps({
 });
 
 axios.get(`/api/posts/${props.postId}`).then(response => {
-      console.log(response);
-      post.value = response.data;
+  console.log(response);
+  post.value = response.data;
 });
 
 const edit = () => {
   axios.patch(`/api/posts/${props.postId}`, post.value).then(()=> {
-    console.log(post)
+    console.log(post);
     router.replace({name: "home"})
   });
 }
