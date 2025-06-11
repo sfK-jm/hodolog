@@ -25,20 +25,20 @@ const write = function () {
 </script>
 
 <template>
-  <div>
-    <el-input v-model="title" placeholder="제목을 입력해주세요" />
-  </div>
+  <el-form label-position="top">
+    <el-form-item label="제목">
+      <el-input size="large" placeholder="제목을 입력해주세요"/>
+    </el-form-item>
 
-  <div class="mt-2">
-    <el-input v-model="content" type="textarea" rows="15"/>
-  </div>
+    <el-form-item label="내용">
+      <el-input type="textarea" rows="15" placeholder="내용을 입력해주세요"/>
+    </el-form-item>
 
-  <div class="mt-2">
-    <div class="d-flex justify-content-end">
-      <el-button type="primary" @click="write()">작성완료</el-button>
-    </div>
+    <el-form-item>
+      <el-button type="primary" style="width: 100%">등록 완료</el-button>
+    </el-form-item>
 
-  </div>
+  </el-form>
 </template>
 
 <style>
