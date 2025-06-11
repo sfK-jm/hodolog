@@ -30,20 +30,4 @@ export default class AxiosHttpClient {
           return Promise.reject(new HttpError(e));
         });
   }
-
-  public async get(config: HttpRequestConfig) {
-    return this.request({...config, method: 'GET'})
-  }
-
-  public async post(config: HttpRequestConfig) {
-    return this.request({...config, method: 'POST'})
-  }
-
-  public async patch(config: HttpRequestConfig) {
-    return this.request({...config, method: 'PATCH'})
-  }
-
-  public async delete(config: HttpRequestConfig) {
-    return this.request({...config, method: 'DELETE'})
-  }
 }
