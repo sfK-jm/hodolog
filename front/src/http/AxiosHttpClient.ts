@@ -1,6 +1,7 @@
 import axios, {type AxiosError, type AxiosInstance, type AxiosRequestConfig, type AxiosResponse} from "axios";
 import { ElMessage } from "element-plus";
 import HttpError from "@/http/HttpError";
+import {singleton} from "tsyringe";
 
 export type HttpRequestConfig = {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
@@ -9,6 +10,7 @@ export type HttpRequestConfig = {
   body? :any
 }
 
+@singleton()
 export default class AxiosHttpClient {
   private readonly client: AxiosInstance = axios.create({
     timeout: 3000,

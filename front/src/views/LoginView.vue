@@ -8,13 +8,17 @@ import AxiosHttpClient from "@/http/AxiosHttpClient";
 import type HttpError from "@/http/HttpError";
 import type {AxiosResponse} from "axios";
 import UserRepository from "@/repository/UserRepository";
+import {container} from "tsyringe";
 
 const state = reactive({
   login: new Login(),
 });
 
 const router = useRouter();
-const USER_REPOSITORY = new UserRepository();
+
+//const USER_REPOSITORY = new UserRepository();
+const USER_REPOSITORY = container.resolve(UserRepository);
+
 
 function doLogin() {
   const httpClient = new AxiosHttpClient();

@@ -19,6 +19,8 @@
     "element-plus": "^2.8.8",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.16",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2"
   },
