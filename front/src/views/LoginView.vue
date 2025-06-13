@@ -6,7 +6,6 @@ import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import AxiosHttpClient from "@/http/AxiosHttpClient";
 import type HttpError from "@/http/HttpError";
-import type {AxiosResponse} from "axios";
 import UserRepository from "@/repository/UserRepository";
 import {container} from "tsyringe";
 
