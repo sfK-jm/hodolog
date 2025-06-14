@@ -35,6 +35,12 @@ const router = createRouter({
       name: "DoLogin",
       component: LoginView,
       props: true
+    },
+    {
+      path: "/post/:postId",
+      name: "post",
+      component: ReadView,
+      props: true,
     }
 
 

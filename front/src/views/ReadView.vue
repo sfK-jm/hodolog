@@ -1,50 +1,48 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
-import axios from "axios";
-import {useRouter} from "vue-router";
+import {onMounted, reactive, ref} from "vue";
 import Comments from "@/components/Comments.vue";
+import {container} from "tsyringe";
+import PostRepository from "@/repository/PostRepository";
 
-const props = defineProps({
-  postId: {
-    type: [Number, String],
-    require: true,
-  },
-});
+const props = defineProps<{
+  postId: number
+}>()
 
-const post = ref({
-  id: 0,
-  title: "",
-  content: "",
-});
+const POST_REPOSITORY = container.resolve(PostRepository);
 
-const router = useRouter();
+const state = reactive({
+  post: '',
+})
 
-const moveToEdit = () => {
-  router.push({name: "edit", params: {postId: props.postId}})
+function getPost() {
+  POST_REPOSITORY.get(props.postId)
+      .then((post) => {
+        console.log(post)
+        state.post = post;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
 }
 
 onMounted(() => {
-  console.log(props.postId)
-  axios.get(`/api/posts/${props.postId}`)
-      .then( response => {
-        console.log(response);
-        post.value = response.data;
-      });
+  getPost()
 })
 
 </script>
 
 <template>
+  <div v-if="state.post != null">
   <el-row>
     <el-col :span="22" :offset="1">
-      <div class="title">{{ post.title }}</div>
+      <div class="title">{{ state.post.title }}</div>
     </el-col>
   </el-row>
 
   <el-row>
     <el-col :span="10" :offset="7">
       <div class="title">
-        <div class="regDate">Posted on 2023-02-05</div>
+        <div class="regDate">Posted on {{ state.post.regDate }}</div>
       </div>
     </el-col>
   </el-row>
@@ -52,7 +50,7 @@ onMounted(() => {
   <el-row >
     <el-col>
       <div class="content">
-        {{ post.content }}
+        {{ state.post.content }}
       </div>
 
       <div class="footer">
@@ -67,7 +65,7 @@ onMounted(() => {
       <Comments/>
     </el-col>
   </el-row>
-
+  </div>
 </template>
 
 <style scoped lang="scss">
