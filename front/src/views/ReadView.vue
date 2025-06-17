@@ -3,6 +3,8 @@ import {onMounted, reactive, ref} from "vue";
 import Comments from "@/components/Comments.vue";
 import {container} from "tsyringe";
 import PostRepository from "@/repository/PostRepository";
+import Post from "@/entity/post/Post";
+import {DateTimeFormatter} from "@js-joda/core";
 
 const props = defineProps<{
   postId: number
@@ -10,13 +12,17 @@ const props = defineProps<{
 
 const POST_REPOSITORY = container.resolve(PostRepository);
 
-const state = reactive({
-  post: '',
+type StateType = {
+  post: Post
+}
+
+const state = reactive<StateType>({
+  post: new Post(),
 })
 
 function getPost() {
   POST_REPOSITORY.get(props.postId)
-      .then((post) => {
+      .then((post: Post) => {
         console.log(post)
         state.post = post;
       })
@@ -42,7 +48,7 @@ onMounted(() => {
   <el-row>
     <el-col :span="10" :offset="7">
       <div class="title">
-        <div class="regDate">Posted on {{ state.post.regDate }}</div>
+        <div class="regDate">Posted on {{ state.post.getDisplayRegDate() }}</div>
       </div>
     </el-col>
   </el-row>

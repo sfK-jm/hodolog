@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 /**
@@ -17,12 +18,12 @@ public class PostResponse {
     private final Long id;
     private final String title;
     private final String content;
-    private final LocalDate regDate;
+    private final LocalDateTime regDate;
 
     public PostResponse(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.regDate = post.getRegDate().toLocalDate();
+        this.regDate = post.getRegDate();
     }
 }
