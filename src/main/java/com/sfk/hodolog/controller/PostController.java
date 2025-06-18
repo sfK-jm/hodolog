@@ -4,6 +4,7 @@ import com.sfk.hodolog.config.UserPrincipal;
 import com.sfk.hodolog.request.post.PostCreate;
 import com.sfk.hodolog.request.post.PostEdit;
 import com.sfk.hodolog.request.post.PostSearch;
+import com.sfk.hodolog.response.PagingResponse;
 import com.sfk.hodolog.response.PostResponse;
 import com.sfk.hodolog.service.PostService;
 import jakarta.validation.Valid;
@@ -25,19 +26,11 @@ public class PostController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/posts")
     public void post(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PostCreate request) {
-        // Case1. 저장한 데이터 Entity -> response로 응답하기
-        // Case2. 저장한 데이터의 primary_id -> response로 응답하기
-        //          Client에서는 수신한 id를 글 조회 API를 통해서 데이터를 수신받음
-        // Case3. 응답 필요 없음 -> Client에서 모든 POST(글) 데이터 context를 잘 관리함
-
         postService.write(userPrincipal.getUserId(), request);
     }
 
     @GetMapping("/posts/{postId}")
     public PostResponse get(@PathVariable Long postId) {
-        // Request 클래스
-        // Response 클래스
-
         return postService.get(postId);
     }
 
@@ -49,7 +42,7 @@ public class PostController {
 
     //조회 API
     @GetMapping("/posts")
-    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
+    public PagingResponse<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
         return postService.getList(postSearch);
     }
 

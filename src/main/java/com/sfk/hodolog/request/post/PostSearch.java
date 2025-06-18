@@ -3,6 +3,8 @@ package com.sfk.hodolog.request.post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -22,5 +24,9 @@ public class PostSearch {
 
     public long getOffset() {
         return (long) (max(1, page) - 1) * min(size, MAX_SIZE);
+    }
+
+    public Pageable getPageAble() {
+        return PageRequest.of(page, size);
     }
 }

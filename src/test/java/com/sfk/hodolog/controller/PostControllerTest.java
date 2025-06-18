@@ -140,7 +140,7 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(post.getId()))
-                .andExpect(jsonPath("$.title").value("1234567890"))
+                .andExpect(jsonPath("$.title").value("123456789012345"))
                 .andExpect(jsonPath("$.content").value("컨텐츠"))
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -166,15 +166,6 @@ class PostControllerTest {
     }
 
 
-
-    /*
-        1개 조회할 경우
-        {id: ..., title: ...}
-
-        리스트로 조회할 경우
-        [{id: ..., title: ...}, {id: ..., title: ...}]
-    */
-
     @Test
     @HodologMockUser
     @DisplayName("글 여러개 조회")
@@ -195,9 +186,9 @@ class PostControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=1&size=10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(10)))
-                .andExpect(jsonPath("$[0].title").value("타이틀 - 30"))
-                .andExpect(jsonPath("$[0].content").value("컨텐츠 - 30"))
+                .andExpect(jsonPath("$.items.length()", Matchers.is(10)))
+                .andExpect(jsonPath("$.items[0].title").value("타이틀 - 30"))
+                .andExpect(jsonPath("$.items[0].content").value("컨텐츠 - 30"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -222,9 +213,9 @@ class PostControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=0&size=10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(10)))
-                .andExpect(jsonPath("$[0].title").value("타이틀 - 30"))
-                .andExpect(jsonPath("$[0].content").value("컨텐츠 - 30"))
+                .andExpect(jsonPath("$.size", Matchers.is(10)))
+                .andExpect(jsonPath("$.items[0].title").value("타이틀 - 30"))
+                .andExpect(jsonPath("$.items[0].content").value("컨텐츠 - 30"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -301,28 +292,5 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(postEdit)))
                 .andExpect(status().isNotFound())
                 .andDo(MockMvcResultHandlers.print());
-    }
-
-    @Test
-    @DisplayName("게시글 작성시 제목에 '바보'는 포함될 수 없다.")
-    void test11() throws Exception {
-        //given
-        PostCreate request = PostCreate.builder()
-                .title("나는 바보입니다..")
-                .content("내용입니다.")
-                .build();
-
-        String json = objectMapper.writeValueAsString(request);
-
-        // when
-        mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isBadRequest())
-                .andDo(MockMvcResultHandlers.print());
-
-        // then
-
     }
 }

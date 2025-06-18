@@ -9,9 +9,11 @@ import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.request.post.PostCreate;
 import com.sfk.hodolog.request.post.PostEdit;
 import com.sfk.hodolog.request.post.PostSearch;
+import com.sfk.hodolog.response.PagingResponse;
 import com.sfk.hodolog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,16 +51,10 @@ public class PostService {
         return new PostResponse(post);
     }
 
-
-    // 글이 너무 많은 경우 -> 비용이 너무 많이 든다.
-    // 글이 -> 100,000,00 -> DB글 모두 조회하는 경우 -> DB가 뻗을 수 있음
-    // DB ->  애플리케이션 서버로 전달하는 시간, 트래픽비용 등이 많이 발생할 수 있다.
-
-    public List<PostResponse> getList(PostSearch postSearch) {
-//        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "id"));
-        return postRepository.getList(postSearch).stream()
-                .map(PostResponse::new)
-                .collect(Collectors.toList());
+    public PagingResponse<PostResponse> getList(PostSearch postSearch) {
+        Page<Post> postPage = postRepository.getList(postSearch);
+        PagingResponse<PostResponse> postList = new PagingResponse<>(postPage, PostResponse.class);
+        return postList;
     }
 
     @Transactional

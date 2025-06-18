@@ -49,7 +49,6 @@ public class PostControllerDocTest {
     void clean() {
         postRepository.deleteAll();
         userRepository.deleteAll();
-
     }
 
 
@@ -74,7 +73,8 @@ public class PostControllerDocTest {
                         PayloadDocumentation.responseFields(
                                 PayloadDocumentation.fieldWithPath("id").description("게시글 ID"),
                                 PayloadDocumentation.fieldWithPath("title").description("게시글 제목"),
-                                PayloadDocumentation.fieldWithPath("content").description("게시글 내용")
+                                PayloadDocumentation.fieldWithPath("content").description("게시글 내용"),
+                                PayloadDocumentation.fieldWithPath("regDate").description("작성 시간")
                         )
                 ));
     }

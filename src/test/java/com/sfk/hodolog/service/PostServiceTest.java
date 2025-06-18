@@ -8,6 +8,7 @@ import com.sfk.hodolog.repository.UserRepository;
 import com.sfk.hodolog.request.post.PostCreate;
 import com.sfk.hodolog.request.post.PostEdit;
 import com.sfk.hodolog.request.post.PostSearch;
+import com.sfk.hodolog.response.PagingResponse;
 import com.sfk.hodolog.response.PostResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -107,12 +108,12 @@ class PostServiceTest {
         // when
 
         //페이징은 0부터 시작
-        List<PostResponse> posts = postService.getList(postSearch);
+        PagingResponse<PostResponse> posts = postService.getList(postSearch);
 
         // then
-        assertEquals(10L, posts.size());
-        assertEquals("타이틀 - 19", posts.get(0).getTitle());
-        assertEquals("타이틀 - 10", posts.get(9).getTitle());
+        assertEquals(10L, posts.getSize());
+        assertEquals("타이틀 - 19", posts.getItems().get(0).getTitle());
+        assertEquals("타이틀 - 10", posts.getItems().get(9).getTitle());
     }
 
     @Test
