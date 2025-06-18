@@ -25,4 +25,13 @@ export default class PostRepository{
             return plainToInstance(Post, response);
         })
     }
+
+    public getList() {
+        return this.httpRepository
+            .get({
+                path: "/api/posts?page=1&size=3"
+            }).then((response) => {
+                return plainToInstance(Post, response);
+            })
+    }
 };

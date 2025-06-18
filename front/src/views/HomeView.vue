@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import axios from "axios";
-import {ref} from "vue";
+import Post from "@/components/Post.vue";
+import {onMounted, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
+import {container} from "tsyringe";
+import PostRepository from "@/repository/PostRepository";
 
+const POST_REPOSITORY = container.resolve(PostRepository);
 const router = useRouter();
 
-const posts: any = ref([]);
+const state = reactive({
+  postList: [],
+})
 
-axios.get("/api/posts?page=1&size=5")
-    .then( response => {
-      console.log(response)
-      response.data.forEach( (r :any )=> {
-        posts.value.push(r);
+function getList() {
+  POST_REPOSITORY.getList()
+      .then((postList) => {
+        console.log('>>>>', postList);
+        state.postList = postList;
       })
-});
+}
+
+onMounted(() => {
+  getList();
+})
 
 </script>
 
 <template>
-  <ul>
-    <li v-for="post in posts" :key="post.id" >
-      <div class="title">
-        <router-link :to="{name: 'read', params: {postId: post.id}}">{{ post.title }}</router-link>
-      </div>
-
-      <div class="content">
-        {{ post.content }}
-      </div>
-
-      <div class="sub d-flex">
-        <div class="category">개발</div>
-        <div class="regDate">2022-06-01</div>
-      </div>
-    </li>
-  </ul>
+  <div class="content">
+    <ul class="posts">
+      <li v-for="post in state.postList" :key="post.id">
+        <Post :post="post"/>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style scoped lang="scss">

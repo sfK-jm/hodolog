@@ -16,4 +16,8 @@ export default class Post {
     public getDisplayRegDate() {
         return this.regDate.format(DateTimeFormatter.ofPattern('yyyy년 MM월 dd일 HH시'))
     }
+
+    public getDisplaySimpleRegDate() {
+        return this.regDate.format(DateTimeFormatter.ofPattern('yyyy-MM-dd'))
+    }
 }

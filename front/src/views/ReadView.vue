@@ -4,7 +4,6 @@ import Comments from "@/components/Comments.vue";
 import {container} from "tsyringe";
 import PostRepository from "@/repository/PostRepository";
 import Post from "@/entity/post/Post";
-import {DateTimeFormatter} from "@js-joda/core";
 
 const props = defineProps<{
   postId: number
