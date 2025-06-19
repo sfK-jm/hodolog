@@ -14,7 +14,7 @@ public class PagingResponse<T> {
     private final List<T> items;
 
     public PagingResponse(Page<?> page, Class<T> clazz) {
-        this.page = page.getNumber();
+        this.page = page.getNumber() + 1;
         this.size = page.getSize();
         this.totalCount = page.getTotalElements();
         this.items = page.getContent().stream()

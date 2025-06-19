@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import Post from "@/components/Post.vue";
-import {onMounted, reactive, ref} from "vue";
-import {useRouter} from "vue-router";
-import {container} from "tsyringe";
+import { onMounted, reactive } from "vue";
+import { container } from "tsyringe";
 import PostRepository from "@/repository/PostRepository";
+import Paging from "@/entity/data/Paging";
 
 const POST_REPOSITORY = container.resolve(PostRepository);
-const router = useRouter();
 
-const state = reactive({
-  postList: [],
+type StateType = {
+  postList: Paging<Post>
+}
+
+const state = reactive<StateType>({
+  postList: new Paging<Post>()
 })
 
-function getList() {
-  POST_REPOSITORY.getList()
+function getList(page = 1) {
+  POST_REPOSITORY.getList(page)
       .then((postList) => {
         console.log('>>>>', postList);
         state.postList = postList;
@@ -28,52 +31,46 @@ onMounted(() => {
 
 <template>
   <div class="content">
+    <span class="totalCount">게시글 수: {{ state.postList.totalCount }}</span>
     <ul class="posts">
-      <li v-for="post in state.postList" :key="post.id">
+      <li v-for="post in state.postList.items" :key="post.id">
         <Post :post="post"/>
       </li>
     </ul>
+
+    <div class="d-flex justify-content-center">
+      <el-pagination
+          :background="true"
+          v-model:current-page="state.postList.page"
+          layout="prev, pager, next"
+          :total="state.postList.totalCount"
+          :default-page-size="3"
+          @current-change="(page: number) => getList(page)"
+      />
+    </div>
+
   </div>
 </template>
 
 <style scoped lang="scss">
-ul {
+.content {
+  padding: 0 1rem 0 1rem;
+  margin-bottom: 2rem;
+}
+
+.totalCount {
+  font-size: 0.88rem;
+}
+
+.posts {
   list-style: none;
   padding: 0;
 
   li {
-    margin-bottom: 2rem;
+    margin-bottom: 2.4rem;
 
-    .title {
-      a {
-        font-size: 1.1rem;
-        color: #383838;
-        text-decoration: none;
-      }
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    .content {
-      font-size: 0.85rem;
-      margin-top: 8px;
-      color: #7e7e7e;
-    }
-
-    &:last-child{
+    &:last-child {
       margin-bottom: 0;
-    }
-
-    .sub {
-      margin-top: 8px;
-      font-size: 0.78rem;
-
-      .regDate {
-        margin-left: 10px;
-        color: #6b6b6b;
-      }
     }
   }
 }

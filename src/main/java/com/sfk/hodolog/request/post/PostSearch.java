@@ -27,6 +27,6 @@ public class PostSearch {
     }
 
     public Pageable getPageAble() {
-        return PageRequest.of(page, size);
+        return PageRequest.of(page - 1, size);
     }
 }

@@ -4,6 +4,7 @@ import {inject, singleton} from "tsyringe";
 import type PostWrite from "@/entity/post/PostWrite";
 import {plainToClass, plainToInstance} from "class-transformer";
 import Post from "@/entity/post/Post";
+import Paging from "@/entity/data/Paging";
 
 @singleton()
 export default class PostRepository{
@@ -26,12 +27,15 @@ export default class PostRepository{
         })
     }
 
-    public getList() {
+    public getList(page: number) {
         return this.httpRepository
             .get({
-                path: "/api/posts?page=1&size=3"
+                path: `/api/posts?page=${page}&size=3`
             }).then((response) => {
-                return plainToInstance(Post, response);
+                const paging = plainToInstance<Paging<Post>, any>(Paging, response);
+                const items = plainToInstance<Post, any[]>(Post, response.items);
+                paging.setItems(items);
+                return paging;
             })
     }
 };
