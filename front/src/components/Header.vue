@@ -1,10 +1,12 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
   <div class="header">
     <div class="title">블로그</div>
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped>
 .header {
