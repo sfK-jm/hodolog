@@ -35,7 +35,7 @@ function write() {
     </el-form-item>
 
     <el-form-item label="내용">
-      <el-input v-model="state.postWrite.content" type="textarea" rows="15" placeholder="내용을 입력해주세요"/>
+      <el-input v-model="state.postWrite.content" type="textarea" :rows="15" placeholder="내용을 입력해주세요"/>
     </el-form-item>
 
     <el-form-item>

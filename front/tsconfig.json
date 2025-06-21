@@ -13,6 +13,9 @@
   ],
   "compilerOptions": {
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  }
+    "emitDecoratorMetadata": true,
+    "types": ["vite/client"],
+    "noImplicitAny": false
+  },
+  "include": ["src", "env.d.ts"]
 }

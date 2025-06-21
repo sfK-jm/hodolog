@@ -15,9 +15,7 @@ const state = reactive({
 
 const router = useRouter();
 
-//const USER_REPOSITORY = new UserRepository();
 const USER_REPOSITORY = container.resolve(UserRepository);
-
 
 function doLogin() {
   const httpClient = new AxiosHttpClient();
@@ -46,9 +44,9 @@ function doLogin() {
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" style="width: 100%" @click="doLogin()"
-            >로그인</el-button
-          >
+          <el-button type="primary" style="width: 100%" @click="doLogin()">
+            로그인
+          </el-button>
         </el-form-item>
       </el-form>
     </el-col>

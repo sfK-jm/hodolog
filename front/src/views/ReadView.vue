@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive} from "vue";
 import Comments from "@/components/Comments.vue";
 import {container} from "tsyringe";
 import PostRepository from "@/repository/PostRepository";
