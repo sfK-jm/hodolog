@@ -1,5 +1,16 @@
 <script setup lang="ts">
 
+import {onBeforeMount} from "vue";
+import {container} from "tsyringe";
+import UserRepository from "@/repository/UserRepository";
+
+const USER_REPOSITORY = container.resolve(UserRepository);
+
+onBeforeMount(() => {
+  USER_REPOSITORY.getProfile().then((user) => {
+    console.log(user);
+  })
+})
 </script>
 
 <template>
