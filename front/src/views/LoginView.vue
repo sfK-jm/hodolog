@@ -4,7 +4,6 @@ import Login from "@/entity/user/Login";
 
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
-import AxiosHttpClient from "@/http/AxiosHttpClient";
 import type HttpError from "@/http/HttpError";
 import UserRepository from "@/repository/UserRepository";
 import {container} from "tsyringe";
@@ -18,12 +17,10 @@ const router = useRouter();
 const USER_REPOSITORY = container.resolve(UserRepository);
 
 function doLogin() {
-  const httpClient = new AxiosHttpClient();
-
   USER_REPOSITORY.login(state.login)
       .then(() => {
         ElMessage({ type: "success", message: "환영햡니다. :)" });
-        router.replace("/");
+        location.href = '/';
       })
       .catch((e: HttpError) => {
         ElMessage({ type: "error", message: e.getMessage()});
