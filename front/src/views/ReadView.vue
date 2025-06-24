@@ -4,12 +4,16 @@ import Comments from "@/components/Comments.vue";
 import {container} from "tsyringe";
 import PostRepository from "@/repository/PostRepository";
 import Post from "@/entity/post/Post";
+import {ElMessage, ElMessageBox} from "element-plus";
+import {useRouter} from "vue-router";
+
 
 const props = defineProps<{
   postId: number
 }>()
 
 const POST_REPOSITORY = container.resolve(PostRepository);
+const router = useRouter();
 
 type StateType = {
   post: Post
@@ -28,6 +32,22 @@ function getPost() {
       .catch((e) => {
         console.log(e);
       });
+}
+
+function remove() {
+  ElMessageBox.confirm('정말로 삭제하시겠습니까?', 'Warning', {
+    title: '삭제',
+    confirmButtonText: '삭제',
+    cancelButtonText: '취소',
+    type: 'warning',
+  }).then(() => {
+    POST_REPOSITORY.delete(props.postId).then(() => {
+        ElMessage({type: 'success', message:'성공적으로 삭제되었습니다'})
+        router.back();
+      })
+  })
+
+
 }
 
 onMounted(() => {
@@ -60,7 +80,7 @@ onMounted(() => {
 
       <div class="footer">
         <div class="edit">수정</div>
-        <div class="delete">삭제</div>
+        <div class="delete" @click="remove()">삭제</div>
       </div>
     </el-col>
   </el-row>
