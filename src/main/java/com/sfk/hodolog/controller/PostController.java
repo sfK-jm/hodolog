@@ -24,12 +24,12 @@ public class PostController {
     private final PostService postService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/posts")
+    @PostMapping("/api/posts")
     public void post(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PostCreate request) {
         postService.write(userPrincipal.getUserId(), request);
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/api/posts/{postId}")
     public PostResponse get(@PathVariable Long postId) {
         return postService.get(postId);
     }
@@ -41,19 +41,19 @@ public class PostController {
      */
 
     //조회 API
-    @GetMapping("/posts")
+    @GetMapping("/api/posts")
     public PagingResponse<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
         return postService.getList(postSearch);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PatchMapping("/posts/{postId}")
+    @PatchMapping("/api/posts/{postId}")
     public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request) {
         postService.edit(postId, request);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') && hasPermission(#postId, 'POST', 'DELETE')")
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/api/posts/{postId}")
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);
     }

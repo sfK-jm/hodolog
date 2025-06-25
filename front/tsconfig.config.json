@@ -1,6 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.node.json",
-  "include": ["vite.config.*", "vitest.config.*", "cypress.config.*", "src", "env.d.ts"],
+  "include": ["vite.config.*", "vitest.config.*", "cypress.config.*", "env.d.ts"],
   "compilerOptions": {
     "composite": true,
     "experimentalDecorators": true,

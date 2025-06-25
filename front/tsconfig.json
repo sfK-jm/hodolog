@@ -2,20 +2,10 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.config.json"
+      "path": "./tsconfig.node.json"
     },
     {
       "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.cypress-ct.json"
     }
   ],
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "types": ["vite/client"],
-    "noImplicitAny": false
-  },
-  "include": ["src", "env.d.ts"]
 }

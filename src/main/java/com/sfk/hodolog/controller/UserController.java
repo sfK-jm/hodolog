@@ -16,7 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/users/me")
+    @GetMapping("/api/users/me")
     public ResponseEntity<UserResponse> getMe(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         if (userPrincipal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

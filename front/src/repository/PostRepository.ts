@@ -1,7 +1,7 @@
 import HttpRepository from "@/repository/HttpRepository";
 import {inject, singleton} from "tsyringe";
 import type PostWrite from "@/entity/post/PostWrite";
-import Post from "@/entity/post/Post";
+import Post from "../entity/post/Post";
 
 @singleton()
 export default class PostRepository{

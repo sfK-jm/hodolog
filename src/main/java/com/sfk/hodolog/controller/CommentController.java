@@ -15,12 +15,12 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/posts/{postId}/comments")
+    @PostMapping("/api/posts/{postId}/comments")
     public void write(@PathVariable Long postId, @RequestBody @Valid CommentCreate request) {
         commentService.write(postId, request);
     }
 
-    @PostMapping("/comments/{commentId}/delete")
+    @PostMapping("/api/comments/{commentId}/delete")
     public void delete(@PathVariable Long commentId, @RequestBody @Valid CommentDelete request) {
         commentService.delete(commentId, request);
     }

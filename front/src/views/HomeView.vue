@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import Post from "@/components/Post.vue";
+import PostComponents from "@/components/PostComponents.vue";
 import { onMounted, reactive } from "vue";
 import { container } from "tsyringe";
 import PostRepository from "@/repository/PostRepository";
 import Paging from "@/entity/data/Paging";
+import type Post from "@/entity/post/Post";
 
 const POST_REPOSITORY = container.resolve(PostRepository);
 
@@ -34,7 +35,7 @@ onMounted(() => {
     <span class="totalCount">게시글 수: {{ state.postList.totalCount }}</span>
     <ul class="posts">
       <li v-for="post in state.postList.items" :key="post.id">
-        <Post :post="post"/>
+        <PostComponents :post="post"/>
       </li>
     </ul>
 
